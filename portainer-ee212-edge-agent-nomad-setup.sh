@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-# Script used to deploy the Portainer Edge agent inside a Kubernetes cluster.
+# Script used to deploy the Portainer Edge agent inside a Nomad cluster.
 
 # Requires:
 # curl
-# kubectl
+# nomad
 
 ### COLOR OUTPUT ###
 
@@ -61,8 +61,8 @@ main() {
   [[ "$(command -v nomad)" ]] || errorAndExit "Unable to find nomad binary. Please ensure nomad is installed before running this script."
 
   info "Downloading agent jobspec..."
-  cp portainer-agent-ee212-edge-nomad.hcl portainer-agent-edge-nomad.hcl
-  #curl -L https://portainer.github.io/nomad/deploy/jobspec/agent/ee/portainer-agent-ee212-edge-nomad.hcl -o portainer-agent-edge-nomad.hcl || errorAndExit "Unable to download agent jobspec"
+  #cp portainer-agent-ee212-edge-nomad.hcl portainer-agent-edge-nomad.hcl
+  curl -L https://raw.githubusercontent.com/mcpacino/test/master/portainer-agent-ee212-edge-nomad.hcl -o portainer-agent-edge-nomad.hcl || errorAndExit "Unable to download agent jobspec"
 
   info "Deploying agent..."
   nomad job run -var "NOMAD_ADDRESS=$NOMAD_ADDRESS" -var "NOMAD_TOKEN=$NOMAD_TOKEN" -var "EDGE_ID=$EDGE_ID" -var "EDGE_KEY=$EDGE_KEY" -var "EDGE_INSECURE_POLL=$EDGE_INSECURE_POLL" portainer-agent-edge-nomad.hcl || errorAndExit "Unable to deploy agent jobspec"
