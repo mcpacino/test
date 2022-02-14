@@ -14,7 +14,7 @@ job "portainer-agent" {
 
       env = {
         EDGE = 1
-        NOMAD_ADDRESS = var.NOMAD_ADDRESS
+        NOMAD_ADDR = var.NOMAD_ADDRESS
         NOMAD_TOKEN = var.NOMAD_TOKEN
         EDGE_ID = var.EDGE_ID
         EDGE_KEY = var.EDGE_KEY
