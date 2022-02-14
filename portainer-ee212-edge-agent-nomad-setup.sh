@@ -65,7 +65,7 @@ main() {
   curl -L https://raw.githubusercontent.com/mcpacino/test/master/portainer-agent-ee212-edge-nomad.hcl -o portainer-agent-edge-nomad.hcl || errorAndExit "Unable to download agent jobspec"
 
   info "Deploying agent..."
-  nomad job run -var "NOMAD_ADDRESS=$NOMAD_ADDRESS" -var "NOMAD_TOKEN=$NOMAD_TOKEN" -var "EDGE_ID=$EDGE_ID" -var "EDGE_KEY=$EDGE_KEY" -var "EDGE_INSECURE_POLL=$EDGE_INSECURE_POLL" portainer-agent-edge-nomad.hcl || errorAndExit "Unable to deploy agent jobspec"
+  nomad job run -token "$NOMAD_TOKEN" -address "$NOMAD_ADDRESS" -var "NOMAD_ADDRESS=$NOMAD_ADDRESS" -var "NOMAD_TOKEN=$NOMAD_TOKEN" -var "EDGE_ID=$EDGE_ID" -var "EDGE_KEY=$EDGE_KEY" -var "EDGE_INSECURE_POLL=$EDGE_INSECURE_POLL" portainer-agent-edge-nomad.hcl || errorAndExit "Unable to deploy agent jobspec"
 
   success "Portainer Edge agent successfully deployed"
   exit 0
