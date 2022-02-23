@@ -23,6 +23,7 @@ job "portainer-agent" {
       config {
         #image = "portainerci/agent:pr236"
         image = "portainerci/agent:pr236-linux-amd64-alpine"
+        force_pull = true
       }
     }
   }
