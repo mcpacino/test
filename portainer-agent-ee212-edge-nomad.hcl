@@ -4,7 +4,6 @@ variable EDGE_ID {}
 variable EDGE_KEY {}
 variable EDGE_INSECURE_POLL {}
 
-
 job "portainer-agent" {
   datacenters = ["dc1"]
 
