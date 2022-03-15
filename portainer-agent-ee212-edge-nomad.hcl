@@ -1,4 +1,3 @@
-variable NOMAD_ADDRESS {}
 variable NOMAD_TOKEN {}
 variable EDGE_ID {}
 variable EDGE_KEY {}
@@ -12,11 +11,11 @@ job "portainer-agent" {
       driver = "docker"
 
       env = {
-        EDGE = 1
-        NOMAD_ADDR = var.NOMAD_ADDRESS
+        NOMAD_ADDR = "http://${attr.nomad.advertise.address}"
         NOMAD_TOKEN = var.NOMAD_TOKEN
-        EDGE_ID = var.EDGE_ID
+        EDGE = 1
         EDGE_KEY = var.EDGE_KEY
+        EDGE_ID = var.EDGE_ID
         EDGE_INSECURE_POLL = var.EDGE_INSECURE_POLL
       }
       config {

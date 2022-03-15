@@ -45,27 +45,29 @@ errorAndExit() {
 ### !COLOR OUTPUT ###
 
 main() {
-  if [[ $# -lt 4 ]]; then
+  if [[ $# -lt 3 ]]; then
     error "Not enough arguments"
-    error "Usage: ${0} <NOMAD_ADDRESS> <NOMAD_TOKEN> <EDGE_ID> <EDGE_KEY> <EDGE_INSECURE_POLL:optional>"
+    error "Usage: ${0} <NOMAD_TOKEN> <EDGE_ID> <EDGE_KEY> <EDGE_INSECURE_POLL:optional>"
     exit 1
   fi
 
-  local NOMAD_ADDRESS="$1"
-  local NOMAD_TOKEN="$2"
-  local EDGE_ID="$3"
-  local EDGE_KEY="$4"
-  local EDGE_INSECURE_POLL="$5"
+  local NOMAD_TOKEN="$1"
+  local EDGE_ID="$2"
+  local EDGE_KEY="$3"
+  local EDGE_INSECURE_POLL="$4"
 
+  local default_nomad_addr="http://127.0.0.1:4646"
+  local nomad_addr=${NOMAD_ADDR:-$default_nomad_addr}
+  
   [[ "$(command -v curl)" ]] || errorAndExit "Unable to find curl binary. Please ensure curl is installed before running this script."
   [[ "$(command -v nomad)" ]] || errorAndExit "Unable to find nomad binary. Please ensure nomad is installed before running this script."
 
   info "Downloading agent jobspec..."
-  #cp portainer-agent-ee212-edge-nomad.hcl portainer-agent-edge-nomad.hcl
   curl -L https://raw.githubusercontent.com/mcpacino/test/master/portainer-agent-ee212-edge-nomad.hcl -o portainer-agent-edge-nomad.hcl || errorAndExit "Unable to download agent jobspec"
 
   info "Deploying agent..."
-  nomad job run -token "$NOMAD_TOKEN" -address "$NOMAD_ADDRESS" -var "NOMAD_ADDRESS=$NOMAD_ADDRESS" -var "NOMAD_TOKEN=$NOMAD_TOKEN" -var "EDGE_ID=$EDGE_ID" -var "EDGE_KEY=$EDGE_KEY" -var "EDGE_INSECURE_POLL=$EDGE_INSECURE_POLL" portainer-agent-edge-nomad.hcl || errorAndExit "Unable to deploy agent jobspec"
+  ${NOMAD_ADDR:-}
+  nomad job run -address "$nomad_addr" -token "$NOMAD_TOKEN" -var "NOMAD_TOKEN=$NOMAD_TOKEN" -var "EDGE_ID=$EDGE_ID" -var "EDGE_KEY=$EDGE_KEY" -var "EDGE_INSECURE_POLL=$EDGE_INSECURE_POLL" portainer-agent-edge-nomad.hcl || errorAndExit "Unable to deploy agent jobspec"
 
   success "Portainer Edge agent successfully deployed"
   exit 0
