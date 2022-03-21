@@ -19,8 +19,8 @@ job "portainer-agent" {
         EDGE_INSECURE_POLL = var.EDGE_INSECURE_POLL
       }
       config {
-        #image = "portainerci/agent:pr236"
-        image = "portainerci/agent:pr236-linux-amd64-alpine"
+        image = "portainerci/agent:pr275"
+        #image = "portainerci/agent:pr236-linux-amd64-alpine"
         force_pull = true
       }
     }
